@@ -154,7 +154,7 @@ IMPORTANT: A single WebSocket connection have a limitation of 5 incoming message
 <tbody>
 <tr>
 <td><strong>socket_id</strong></td>
-<td style="text-align:center">^[a-z0-9]{10}$</td>
+<td style="text-align:center">^[a-zA-Z0-9]{24}$</td>
 <td>The WebSocket connection ID, provided in the websocket connection data <em>websocketInfo</em> .</td>
 </tr>
 </tbody>
@@ -196,13 +196,13 @@ IMPORTANT: A single WebSocket connection have a limitation of 5 incoming message
 <td>The WebSocket message content</td>
 </tr>
 <tr>
-<td>server_ip</td>
+<td>(deprecated) server_ip</td>
 <td style="text-align:center"><em>string(ipv4)</em></td>
 <td>The server IP address holding the WebSocket connection</td>
 </tr>
 <tr>
 <td>socket_id</td>
-<td style="text-align:center">^[a-z0-9]{10}$</td>
+<td style="text-align:center">^[a-zA-Z0-9]{24}$</td>
 <td>Unique socket ID representing this websocket connection.</td>
 </tr>
 <tr>
@@ -267,7 +267,7 @@ IMPORTANT: A single WebSocket connection have a limitation of 5 incoming message
 <tbody>
 <tr>
 <td><strong>socket_id</strong></td>
-<td style="text-align:center">^[a-z0-9]{10}$</td>
+<td style="text-align:center">^[a-zA-Z0-9]{24}$</td>
 <td>The WebSocket connection ID, provided in the websocket connection data <em>websocketInfo</em> .</td>
 </tr>
 <tr>
@@ -407,7 +407,7 @@ local data = {
 <tbody>
 <tr>
 <td><strong>socket_id</strong></td>
-<td style="text-align:center">^[a-z0-9]{10}$</td>
+<td style="text-align:center">^[a-zA-Z0-9]{24}$</td>
 <td>The WebSocket connection ID, provided in the websocket connection data <em>websocketInfo</em>.<br/> Automatically set when calling <em>websocketInfo.send(&quot;message&quot;)</em> from Murano <strong>endpoint script</strong>.</td>
 </tr>
 <tr>
@@ -504,13 +504,13 @@ local data = {
 <td>The WebSocket message content</td>
 </tr>
 <tr>
-<td>server_ip</td>
+<td>(deprecated) server_ip</td>
 <td style="text-align:center"><em>string(ipv4)</em></td>
 <td>The server IP address holding the WebSocket connection</td>
 </tr>
 <tr>
 <td>socket_id</td>
-<td style="text-align:center">^[a-z0-9]{10}$</td>
+<td style="text-align:center">^[a-zA-Z0-9]{24}$</td>
 <td>Unique socket ID representing this websocket connection.</td>
 </tr>
 <tr>

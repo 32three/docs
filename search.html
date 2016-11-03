@@ -117,27 +117,75 @@
       </ul>
       <div class='menu section' role='flatdoc-menu'></div>
     </div>
-    <div role='flatdoc-content' class='content'><blockquote>
-<p>This page describes the services accessible through Murano scripting.
-Services are composed by two distinct components: <strong>operations</strong> and <strong>events</strong>.
-<strong>Operations</strong> are functions that can directly be called from within a script.
-<strong>Events</strong> trigger the execution of a script.</p>
-</blockquote>
-<h1 id="core-services">Core Services</h1>
-<ul>
-<li><a href="./config.md">Config</a>  - Config Service </li>
-<li><a href="./device.md">Device</a>  - Device Gateway Service </li>
-<li><a href="./email.md">Email</a>  - Email Service </li>
-<li><a href="./keystore.md">Keystore</a>  - Key-Value Store </li>
-<li><a href="./timer.md">Timer</a>  - Timer Service API </li>
-<li><a href="./timeseries.md">Timeseries</a>  - Time Series Storage Service </li>
-<li><a href="./tsdb.md">Tsdb</a>  - Cassandra-based Timeseries Storage Service </li>
-<li><a href="./twilio.md">Twilio</a>  - Twilio Service </li>
-<li><a href="./user.md">User</a>  - User Management Service </li>
-<li><a href="./webservice.md">Webservice</a>  - Custom API Gateway Service </li>
-<li><a href="./websocket.md">Websocket</a>  - WebSocket Gateway Service </li>
-</ul>
-</div>
+    <div role='flatdoc-content' class='content'><script type="text/javascript" src="/assets/elasticlunr.min.js"></script>
+<script>
+$(document).ready(function() {
+  'use strict';
+  function getParameterByName(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+  var contentEl = $('div[role="flatdoc-content"]')
+  var query = getParameterByName('q');
+  if (query === '') {
+    contentEl.html('Missing query parameter.');
+    return;
+  }
+  contentEl.html('Searching documentation...');
+  var options = {
+    headers: {
+      'Accept': 'application/vnd.github.v3.text-match+json'
+    }
+  };  
+  function toDocPath(path) {
+    var href = path.replace(/README\.md$/, '');
+    href = href.replace(/\.md$/, '');
+    return href;
+  }    
+  $.ajax('/search_index.json', options).done(function(data, status) {
+    //var index_data = JSON.parse(data);
+
+    var index = elasticlunr(function () {
+      this.setRef('i');
+      this.addField('path');
+      this.addField('title');
+      this.addField('body');
+      this.addField('preview');
+    });
+
+    for (var i in data) {
+
+      index.addDoc({
+        i: i,
+        path: data[i].path,
+        title: data[i].title,
+        body: data[i].body,
+        preview: data[i].preview
+      });
+    }
+
+    var result = index.search(query);
+
+    var querySpan = '<span class="search-query">' + query + '</span>';
+    if (result.length === 0) {
+      contentEl.html('No results for ' + querySpan);
+    } else {
+      contentEl.html(JSON.stringify(result));
+      var html = '<div><div>Documents matching ' + querySpan + ':</div><ol>';
+      for (var i = 0; i < result.length; i++) {
+        var item = data[result[i].ref];
+        html += ('<li class="search-result"><a href="' + item.path + '">' + item.title + '</a>');
+        html += ('<div class="search-result-fragment">' + item.preview + '</div>');
+        html += '</li>';
+      }
+      html += '</ol></div>';
+      contentEl.html(html);
+    }
+  });
+});
+</script></div>
   </div>
 
   <div id="markdown" style="display:none;">
